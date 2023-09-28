@@ -54,10 +54,10 @@ class Logger:
                              f"{datetime.datetime.now().hour}.{datetime.datetime.now().minute}.log"
 
         if export.GlobalVariables.file_logging:
-            self.log_files = [open(main_log_file_path, "w")]
+            self.log_files = {"main": open(main_log_file_path, "w")}
 
     def log(self, text: str, log_type=LogType.INF,
-            log_file_index=0, log_to_file=True):
+            log_file_key="main", log_to_file=True):
 
         print_color = log_type.get_color()
 
@@ -67,18 +67,18 @@ class Logger:
         if not export.GlobalVariables.file_logging:
             return
 
-        if log_file_index >= len(self.log_files):
-            raise InvalidLoginFileException("Seems like there is no log file bound to provided index")
+        if log_file_key not in self.log_files.keys():
+            raise InvalidLoginFileException("Seems like there is no log file bound to provided key")
 
         if log_to_file:
-            self.log_files[log_file_index]\
+            self.log_files[log_file_key]\
                 .write(f"{datetime.datetime.now().day}."
                        f"{datetime.datetime.now().month}: "
                        f"{datetime.datetime.now().hour}.{datetime.datetime.now().minute}: "
                        f"{log_type.to_string()}:\t{text}\n")
 
-    def add_log_file(self, log_file_path: str):
+    def add_log_file(self, log_file_path: str, log_file_key: str):
         if export.GlobalVariables.file_logging:
-            self.log_files.append(open(log_file_path, "w"))
+            self.log_files[log_file_key] = open(log_file_path, "w")
         elif not export.GlobalVariables.disable_file_exception:
             raise FileLoggingRestricted("Logging to file is restricted (probably, by -nofilelog flag)")

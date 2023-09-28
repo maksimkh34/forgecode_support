@@ -6,5 +6,5 @@ from bot_defs import *
 
 
 def exec_handlers(application):
-    start_handler = CommandHandler('start', start)
+    start_handler = CommandHandler('test', test)
     application.add_handler(start_handler)

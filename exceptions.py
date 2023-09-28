@@ -1,7 +1,7 @@
 # Локальные исключения
 
 class InvalidLoginFileException(Exception):
-    """Log file with provided index isn't in database"""
+    """Log file with provided key isn't in dictionary"""
     pass
 
 
